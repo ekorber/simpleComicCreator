@@ -1,0 +1,43 @@
+#:include ./layouts/widgets/layerwidget.kv
+
+<LayersTab>:
+    canvas.before:
+        Color:
+            rgba: 0.7, 0, 0, 1
+
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    orientation: 'vertical'
+    padding: 5
+
+    Button:
+        text: 'New Image Layer'
+        size_hint: 1, None
+        size: 1, 40
+        on_press: root.on_new_image_layer()
+
+    Button:
+        text: 'Move Layer Up'
+        size_hint: 1, None
+        size: 1, 40
+        on_press: root.move_layer_up()
+
+    Button:
+        text: 'Move Layer Down'
+        size_hint: 1, None
+        size: 1, 40
+        on_press: root.move_layer_down()
+
+    Widget:
+        size_hint: 1, None
+        size: 1, 10
+
+    ScrollView:
+        BoxLayout:
+            id: layers_area
+            orientation: 'vertical'
+            size_hint: 1, None
+            height: self.minimum_height
+            spacing: 5

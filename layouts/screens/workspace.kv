@@ -1,0 +1,19 @@
+#:include ./layouts/tabs/editortab.kv
+#:include ./layouts/tabs/tooloptionstab.kv
+#:include ./layouts/tabs/layerstab.kv
+#:include ./layouts/widgets/operationbuttonslistwidget.kv
+
+<Workspace>:
+
+    EditorTab:
+
+    OperationButtonsListWidget:
+
+    BoxLayout:
+        orientation: 'vertical'
+        size_hint: (None, 1)
+        size: 300, 1
+        pos_hint: { 'right': 1 }
+
+        ToolOptionsTab:
+        LayersTab:

@@ -1,0 +1,19 @@
+#:include ./layouts/screens/workspace.kv
+#:include ./layouts/screens/signupform.kv
+
+WindowManager:
+    WorkspaceWindow:
+    SignUpWindow:
+    LoginWindow:
+
+<LoginWindow>:
+    name: 'login'
+    SignUpForm:
+
+<SignUpWindow>:
+    name: 'signup'
+    SignUpForm:
+
+<WorkspaceWindow>:
+    name: 'workspace'
+    Workspace:

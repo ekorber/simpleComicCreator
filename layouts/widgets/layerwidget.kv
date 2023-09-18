@@ -1,0 +1,30 @@
+<LayerWidget>:
+    layer_name_input: layer_name_input
+    delete_button: delete_button
+    size_hint: 1, None
+    size: 1, 60
+    spacing: 10
+    padding: 10
+
+    canvas:
+        Color:
+            rgba: self.bg_color
+
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    TextInput:
+        id: layer_name_input
+        multiline: False
+        background_color: root.text_input_bg_color
+        foreground_color: root.text_input_fg_color
+        size_hint: 1, None
+        size: 1, 30
+        pos_hint: { 'center_y': 0.5 }
+        on_focus: root.on_focus_changed(args[1])
+
+    Button:
+        id: delete_button
+        text: 'Delete'
+        on_press: root.on_delete_click()

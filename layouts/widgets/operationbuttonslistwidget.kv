@@ -1,0 +1,28 @@
+<OperationButtonsListWidget>:
+    size_hint: (None, 1)
+    size: 50, 1
+    move_button: move_button
+    rotate_button: rotate_button
+    scale_button: scale_button
+
+    Button:
+        id: move_button
+        text: 'Grab'
+        background_color: 1, 1, 1, 1
+        size_hint: (None, None)
+        size: 50, 50
+        on_press: root.set_op_move()
+    Button:
+        id: rotate_button
+        text: 'Rotate'
+        background_color: 1, 1, 1, 0.5
+        size_hint: (None, None)
+        size: 50, 50
+        on_press: root.set_op_rotate()
+    Button:
+        id: scale_button
+        text: 'Scale'
+        background_color: 1, 1, 1, 0.5
+        size_hint: (None, None)
+        size: 50, 50
+        on_press: root.set_op_scale()

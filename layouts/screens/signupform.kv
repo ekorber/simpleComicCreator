@@ -1,0 +1,26 @@
+<SignUpForm>:
+    first_name: first_name
+    email: email
+
+    cols: 1
+
+    GridLayout:
+        cols: 2
+
+        Label:
+            text: "First Name: "
+
+        TextInput:
+            id: first_name
+            multiline: False
+
+        Label:
+            text: "Email: "
+
+        TextInput:
+            id: email
+            multiline: False
+
+    Button:
+        text: "Sign Up"
+        on_press: root.submit_button_pressed()
