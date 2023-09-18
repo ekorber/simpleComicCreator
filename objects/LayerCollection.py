@@ -33,7 +33,7 @@ class LayerCollection:
     def get_active_layer(self):
         return self.layers[self.active_layer]
 
-    def get_layer_of_index(self, index: int):
+    def get_layer_at_index(self, index: int):
         if 0 <= index < len(self.layers):
             return self.layers[index]
         else:

@@ -78,5 +78,5 @@ class LayersTab(BoxLayout):
         for i in reversed(range(len(self.layer_widgets))):
             self.layer_widgets[i].index = i
             self.layer_widgets[i].layer_name_input.text\
-                = SessionGlobals.layer_collection.get_layer_of_index(i).layer_name
+                = SessionGlobals.layer_collection.get_layer_at_index(i).layer_name
             self.ids.layers_area.add_widget(self.layer_widgets[i])
