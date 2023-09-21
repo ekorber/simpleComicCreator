@@ -24,6 +24,9 @@ class ImageLayer(Widget):
             Rectangle(pos=self.pos, size=self.size, texture=self.image.texture)
             PopMatrix()
 
+    def are_attributes_equal(self, name, pos, angle, size):
+        return self.layer_name == name and self.pos == pos and self.angle == angle and self.size == size
+
 
 class LayerCollection:
     def __init__(self):

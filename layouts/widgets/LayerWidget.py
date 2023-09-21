@@ -1,6 +1,7 @@
 from kivy.properties import ObjectProperty, ColorProperty
 from kivy.uix.boxlayout import BoxLayout
 
+import ops.Operations
 from data import SessionGlobals
 
 
@@ -51,3 +52,7 @@ class LayerWidget(BoxLayout):
 
             self.layer_name_input.text = self.layer_name_input.text\
                 = SessionGlobals.layer_collection.get_layer_at_index(self.index).layer_name
+
+            ops.Operations.OperationHistory.confirm_operation(SessionGlobals.layer_collection.get_active_layer())
+
+            SessionGlobals.input_listener.keyboard_open()

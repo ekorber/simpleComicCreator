@@ -17,7 +17,6 @@ class Hotkey:
                 for self_mod in self.modifiers:
                     if mod == self_mod:
                         num_required_modifiers_found += 1
-                        print(mod)
 
             return self.keycode == keycode and num_required_modifiers_found == len(self.modifiers)
         else:
@@ -44,7 +43,7 @@ NEXT_PAGE_KEY = Hotkey(keycode=(275, 'right'))
 PREVIOUS_PAGE_KEY = Hotkey(keycode=(276, 'left'))
 
 UNDO_KEY = Hotkey(keycode=(122, 'z'), modifiers=['ctrl'])
-REDO_KEY = Hotkey(keycode=(122, 'z'), modifiers=['shift', 'ctrl'])
+REDO_KEY = Hotkey(keycode=(122, 'z'), modifiers=['ctrl', 'shift'])
 
 CONFIRM_KEY = Hotkey(keycode=(13, 'enter'))
 CANCEL_KEY = Hotkey(keycode=(27, 'escape'))

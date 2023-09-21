@@ -1,4 +1,8 @@
 from enum import Enum
+from copy import copy
+
+import data.SessionGlobals
+from objects.LayerCollection import ImageLayer
 
 
 # def overlapping(pos: (int, int), rect_pos: (int, int), rect_size: (int, int)):
@@ -10,6 +14,109 @@ class OperationType(Enum):
     TRANSLATE = 0
     ROTATE = 1
     SCALE = 2
+
+
+class OperationHistoryNode:
+    def __init__(self, layer: ImageLayer, pos, angle, size, layer_name):
+        self.layer = layer
+        self.pos = pos
+        self.angle = angle
+        self.size = size
+        self.layer_name = layer_name
+
+
+class OperationHistory:
+    MAX_UNDO_LENGTH = 128
+    history = []
+    current_index = -1
+
+    @staticmethod
+    def confirm_operation(new_layer_state: ImageLayer):
+
+        if OperationHistory.current_index == len(OperationHistory.history) - 1 or len(OperationHistory.history) == 0:
+
+            if len(OperationHistory.history) == 0:
+                OperationHistory.current_index = -1
+
+            if len(OperationHistory.history) > 0:
+                current_name = OperationHistory.history[OperationHistory.current_index].layer_name
+                current_pos = OperationHistory.history[OperationHistory.current_index].pos
+                current_angle = OperationHistory.history[OperationHistory.current_index].angle
+                current_size = OperationHistory.history[OperationHistory.current_index].size
+
+                # Return early if no changes have been made
+                if new_layer_state.are_attributes_equal(current_name, current_pos, current_angle, current_size):
+                    return
+
+            if len(OperationHistory.history) < OperationHistory.MAX_UNDO_LENGTH:
+                OperationHistory.current_index += 1
+            else:
+                # Remove initial element for FIFO list
+                OperationHistory.history.pop(0)
+        else:
+            iterations = (len(OperationHistory.history) - 1) - OperationHistory.current_index
+            # Remove all nodes after the current one
+            for i in range(iterations):
+                OperationHistory.history.pop(OperationHistory.current_index + 1)
+
+        pos = copy(new_layer_state.pos)
+        angle = copy(new_layer_state.angle)
+        size = copy(new_layer_state.size)
+        layer_name = copy(new_layer_state.layer_name)
+
+        OperationHistory.history.append(OperationHistoryNode(
+            new_layer_state,
+            pos,
+            angle,
+            size,
+            layer_name,
+        ))
+
+        OperationHistory.current_index = len(OperationHistory.history) - 1
+
+        if len(OperationHistory.history) > 0:
+            for node in OperationHistory.history:
+                print(f'Node ImageLayer Reference: pos: {node.pos}'
+                      f' - angle: {node.angle}'
+                      f' - size: {node.size}'
+                      f' - layer name: {node.layer_name}')
+
+            print(f'CURRENT ImageLayer: pos: {data.SessionGlobals.layer_collection.get_active_layer().pos}'
+                  f' - angle: {data.SessionGlobals.layer_collection.get_active_layer().angle}'
+                  f' - size: {data.SessionGlobals.layer_collection.get_active_layer().size}'
+                  f' - layer name: {data.SessionGlobals.layer_collection.get_active_layer().layer_name} \n')
+
+    @staticmethod
+    def can_undo():
+        return OperationHistory.current_index > 0
+
+    @staticmethod
+    def undo():
+        if OperationHistory.can_undo():
+            OperationHistory.execute_historical_node(OperationHistory.current_index - 1)
+
+    @staticmethod
+    def can_redo():
+        return OperationHistory.current_index < len(OperationHistory.history) - 1
+
+    @staticmethod
+    def redo():
+        if OperationHistory.can_redo():
+            OperationHistory.execute_historical_node(OperationHistory.current_index + 1)
+
+    @staticmethod
+    def execute_historical_node(index):
+        OperationHistory.current_index = index
+        node = OperationHistory.history[index]
+        node.layer.pos = node.pos
+        node.layer.angle = node.angle
+        node.layer.size = node.size
+        node.layer.layer_name = node.layer_name
+        node.layer.render()
+        print(f'CURRENT ImageLayer: pos: {data.SessionGlobals.layer_collection.get_active_layer().pos}'
+              f' - angle: {data.SessionGlobals.layer_collection.get_active_layer().angle}'
+              f' - size: {data.SessionGlobals.layer_collection.get_active_layer().size}'
+              f' - layer name: {data.SessionGlobals.layer_collection.get_active_layer().layer_name}')
 
 
 class Translate:
@@ -29,8 +136,12 @@ class Translate:
         Translate.last_mouse_pos[:] = pos
 
     @staticmethod
-    def on_touch_up():
-        pass
+    def on_touch_up(active_layer_image):
+        Translate.confirm(active_layer_image)
+
+    @staticmethod
+    def confirm(active_layer_image):
+        OperationHistory.confirm_operation(active_layer_image)
 
     @staticmethod
     def cancel(active_layer_image):
@@ -53,8 +164,12 @@ class Rotate:
         Rotate.last_mouse_pos_x = pos[0]
 
     @staticmethod
-    def on_touch_up():
-        pass
+    def on_touch_up(active_layer_image):
+        Rotate.confirm(active_layer_image)
+
+    @staticmethod
+    def confirm(active_layer_image):
+        OperationHistory.confirm_operation(active_layer_image)
 
     @staticmethod
     def cancel(active_layer_image):
@@ -86,8 +201,12 @@ class Scale:
         Scale.last_mouse_pos_x = pos[0]
 
     @staticmethod
-    def on_touch_up():
-        pass
+    def on_touch_up(active_layer_image):
+        Scale.confirm(active_layer_image)
+
+    @staticmethod
+    def confirm(active_layer_image):
+        OperationHistory.confirm_operation(active_layer_image)
 
     @staticmethod
     def cancel(active_layer_image):

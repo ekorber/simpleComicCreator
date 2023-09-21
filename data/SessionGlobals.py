@@ -1,6 +1,8 @@
 from objects.LayerCollection import LayerCollection
 from ops.Operations import OperationType
 
+input_listener = None
+
 # WORKSPACE
 editor = None
 op_button_list = None
