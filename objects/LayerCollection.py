@@ -7,7 +7,6 @@ class ImageLayer(Widget):
     def __init__(self, image_src: str, pos: (int, int), **kwargs):
         super().__init__(**kwargs)
         self.layer_name = 'New Layer'
-        self.page = 0
         self.pos = pos
         self.image = Image(source=str(image_src))
         self.size = self.image.texture_size
