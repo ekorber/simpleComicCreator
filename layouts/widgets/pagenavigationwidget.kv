@@ -1,0 +1,48 @@
+<PageNavigationWidget>:
+    orientation: 'vertical'
+    dropdown_button: dropdown_button
+    add_page_button: add_page_button
+    delete_page_button: delete_page_button
+    spacing: 2
+    padding: 5
+    size_hint: (1, None)
+    size: 1, 100
+
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0.5, 1
+
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Label:
+        text: 'Page Navigation'
+        size_hint: 1, None
+        size: 1, 40
+
+    BoxLayout:
+        Button:
+            id: add_page_button
+            text: 'New'
+            on_press: root.add_new_page()
+            size_hint: (None, 1)
+            size: 50, 1
+
+        Label:
+            id: page_num_text
+            text: root.page_num_text
+            size_hint: (None, 1)
+            size: 50, 1
+
+        Button:
+            id: dropdown_button
+            text: 'Select Page'
+            on_press: root.open_dropdown()
+
+        Button:
+            id: delete_page_button
+            text: 'Delete'
+            on_press: root.delete_page()
+            size_hint: (None, 1)
+            size: 60, 1
