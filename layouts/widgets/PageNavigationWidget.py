@@ -9,10 +9,21 @@ from data import SessionGlobals
 class PageNavigationWidget(BoxLayout):
     dropdown_button = ObjectProperty(Button)
     page_num_text = StringProperty()
+    dropdown = None
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.create_dropdown_options()
+        self.page_num_text = str(SessionGlobals.current_page + 1)
 
+    def select_page(self, page_num: str):
+        self.page_num_text = page_num
+        SessionGlobals.current_page = int(page_num) - 1
+
+    def open_dropdown(self):
+        self.dropdown.open(self.dropdown_button)
+
+    def create_dropdown_options(self):
         self.dropdown = DropDown()
         for index in range(SessionGlobals.total_pages):
 
@@ -27,17 +38,22 @@ class PageNavigationWidget(BoxLayout):
             self.dropdown.add_widget(btn)
 
         self.dropdown.bind(on_select=lambda instance, x: self.select_page(str(x)))
-        self.page_num_text = str(SessionGlobals.current_page + 1)
-
-    def select_page(self, page_num: str):
-        self.page_num_text = page_num
-        SessionGlobals.current_page = int(page_num)
-
-    def open_dropdown(self):
-        self.dropdown.open(self.dropdown_button)
 
     def add_new_page(self):
-        pass
+        SessionGlobals.total_pages += 1
+        SessionGlobals.current_page = SessionGlobals.total_pages - 1
+        self.create_dropdown_options()
+        self.select_page(str(SessionGlobals.current_page + 1))
 
     def delete_page(self):
-        pass
+        if SessionGlobals.total_pages <= 1:
+            return
+
+        SessionGlobals.total_pages -= 1
+
+        if SessionGlobals.current_page == SessionGlobals.total_pages:
+            SessionGlobals.current_page -= 1
+
+        self.create_dropdown_options()
+        self.select_page(str(SessionGlobals.current_page + 1))
+
