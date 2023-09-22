@@ -8,7 +8,7 @@ from data import SessionGlobals
 
 class PageNavigationWidget(BoxLayout):
     dropdown_button = ObjectProperty(Button)
-    page_num_text = StringProperty('1')
+    page_num_text = StringProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -27,9 +27,11 @@ class PageNavigationWidget(BoxLayout):
             self.dropdown.add_widget(btn)
 
         self.dropdown.bind(on_select=lambda instance, x: self.select_page(str(x)))
+        self.page_num_text = str(SessionGlobals.current_page + 1)
 
-    def select_page(self, text: str):
-        self.page_num_text = text
+    def select_page(self, page_num: str):
+        self.page_num_text = page_num
+        SessionGlobals.current_page = int(page_num)
 
     def open_dropdown(self):
         self.dropdown.open(self.dropdown_button)
