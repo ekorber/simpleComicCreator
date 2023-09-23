@@ -1,4 +1,4 @@
-from objects.ImageLayer import ImageLayer, LayerType
+from toBeDeleted.objects.ImageLayer import ImageLayer, LayerType
 from matplotlib.colors import to_rgb
 from time import time
 import cairo

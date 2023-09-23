@@ -1,8 +1,8 @@
 from PIL import ImageTk, Image
-from data import AppGlobals as App
+from toBeDeleted import AppGlobals as App
 from enum import Enum
 import numpy as np
-from lib import GuiHandler as Gui
+from toBeDeleted.lib import GuiHandler as Gui
 
 
 class LayerType(Enum):

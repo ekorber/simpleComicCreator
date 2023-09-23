@@ -1,4 +1,4 @@
-from data import AppGlobals as App
+from toBeDeleted import AppGlobals as App
 from objects.ImageLayer import ImageLayer
 from objects.SVGImageLayer import SVGImageLayer
 from lib import GuiHandler as Gui
@@ -72,7 +72,6 @@ def move_layer_to_new_index(current: int, new: int):
     # If the 'new' layer index is negative
     if current == 0 and new < current:
         return
-
     page = App.project.pages[App.current_page]
 
     # If the 'new' layer index is greater than the scope of the array
