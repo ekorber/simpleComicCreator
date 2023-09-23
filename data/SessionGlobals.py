@@ -1,4 +1,4 @@
-from objects.ProjectData import ProjectData
+from data.ProjectData import ProjectData
 from ops.Operations import OperationType
 
 # INPUT

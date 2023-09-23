@@ -2,7 +2,7 @@ from enum import Enum
 from copy import copy
 
 import data.SessionGlobals
-from objects.ProjectData import ImageLayer
+from data.ProjectData import ImageLayer
 
 
 # def overlapping(pos: (int, int), rect_pos: (int, int), rect_size: (int, int)):

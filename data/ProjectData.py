@@ -123,7 +123,7 @@ class ProjectData:
         return len(self.pages)
 
     def add_new_page(self, index: int):
-        self.pages.insert(index, PageData())
+        self.pages.insert(index, PageData(page_size=self.size_in_pixels))
         self.current_page_index = index
 
     def delete_page(self, index: int):

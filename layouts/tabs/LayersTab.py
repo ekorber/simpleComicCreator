@@ -8,7 +8,7 @@ import ops.Operations
 from data import SessionGlobals
 from layouts.widgets.FileChooserWidget import FileChooserWidget
 from layouts.widgets.LayerWidget import LayerWidget
-from objects.ProjectData import ImageLayer
+from data.ProjectData import ImageLayer
 
 
 class LayersTab(BoxLayout):
