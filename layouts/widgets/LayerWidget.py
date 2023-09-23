@@ -17,7 +17,7 @@ class LayerWidget(BoxLayout):
         super().__init__(**kwargs)
         self.index = index
         self.layers_tab = layers_tab
-        self.layer_name_input.text = SessionGlobals.layer_collection.get_layer_at_index(self.index).layer_name
+        self.layer_name_input.text = SessionGlobals.project.get_layer_at_index(self.index).layer_name
 
     def on_touch_down(self, touch):
         super().on_touch_down(touch)
@@ -46,13 +46,13 @@ class LayerWidget(BoxLayout):
             # Prevent empty layer name
             stripped_input = self.layer_name_input.text.strip()
             if stripped_input:
-                SessionGlobals.layer_collection.get_layer_at_index(self.index).layer_name = stripped_input
+                SessionGlobals.project.get_layer_at_index(self.index).layer_name = stripped_input
             else:
-                SessionGlobals.layer_collection.get_layer_at_index(self.index).layer_name = 'Layer'
+                SessionGlobals.project.get_layer_at_index(self.index).layer_name = 'Layer'
 
             self.layer_name_input.text = self.layer_name_input.text\
-                = SessionGlobals.layer_collection.get_layer_at_index(self.index).layer_name
+                = SessionGlobals.project.get_layer_at_index(self.index).layer_name
 
-            ops.Operations.OperationHistory.confirm_operation(SessionGlobals.layer_collection.get_active_layer())
+            ops.Operations.OperationHistory.confirm_operation(SessionGlobals.project.get_active_layer())
 
             SessionGlobals.input_listener.keyboard_open()

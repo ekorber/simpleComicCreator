@@ -14,18 +14,24 @@ class PageNavigationWidget(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.create_dropdown_options()
-        self.page_num_text = str(SessionGlobals.current_page + 1)
+        self.page_num_text = str(SessionGlobals.project.current_page_index + 1)
 
     def select_page(self, page_num: str):
+        SessionGlobals.editor.clear_screen()
+        SessionGlobals.layers_tab.clear_layers_tab()
+
         self.page_num_text = page_num
-        SessionGlobals.current_page = int(page_num) - 1
+        SessionGlobals.project.current_page_index = int(page_num) - 1
+
+        SessionGlobals.editor.populate_screen()
+        SessionGlobals.layers_tab.populate_layers_tab()
 
     def open_dropdown(self):
         self.dropdown.open(self.dropdown_button)
 
     def create_dropdown_options(self):
         self.dropdown = DropDown()
-        for index in range(SessionGlobals.total_pages):
+        for index in range(SessionGlobals.project.get_total_pages()):
 
             btn = Button(text='%d' % (index + 1), size_hint_y=None, height=30)
 
@@ -40,20 +46,29 @@ class PageNavigationWidget(BoxLayout):
         self.dropdown.bind(on_select=lambda instance, x: self.select_page(str(x)))
 
     def add_new_page(self):
-        SessionGlobals.total_pages += 1
-        SessionGlobals.current_page = SessionGlobals.total_pages - 1
+        SessionGlobals.editor.clear_screen()
+        SessionGlobals.layers_tab.clear_layers_tab()
+
+        SessionGlobals.project.add_new_page(SessionGlobals.project.get_total_pages())
+
+        SessionGlobals.editor.populate_screen()
+        SessionGlobals.layers_tab.populate_layers_tab()
+
         self.create_dropdown_options()
-        self.select_page(str(SessionGlobals.current_page + 1))
+        self.select_page(str(SessionGlobals.project.current_page_index + 1))
 
     def delete_page(self):
-        if SessionGlobals.total_pages <= 1:
+        if SessionGlobals.project.get_total_pages() <= 1:
             return
 
-        SessionGlobals.total_pages -= 1
+        SessionGlobals.editor.clear_screen()
+        SessionGlobals.layers_tab.clear_layers_tab()
 
-        if SessionGlobals.current_page == SessionGlobals.total_pages:
-            SessionGlobals.current_page -= 1
+        SessionGlobals.project.delete_page(SessionGlobals.project.current_page_index)
+
+        SessionGlobals.editor.populate_screen()
+        SessionGlobals.layers_tab.populate_layers_tab()
 
         self.create_dropdown_options()
-        self.select_page(str(SessionGlobals.current_page + 1))
+        self.select_page(str(SessionGlobals.project.current_page_index + 1))
 

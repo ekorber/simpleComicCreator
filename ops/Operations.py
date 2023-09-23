@@ -2,7 +2,7 @@ from enum import Enum
 from copy import copy
 
 import data.SessionGlobals
-from objects.LayerCollection import ImageLayer
+from objects.ProjectData import ImageLayer
 
 
 # def overlapping(pos: (int, int), rect_pos: (int, int), rect_size: (int, int)):
@@ -81,10 +81,10 @@ class OperationHistory:
                       f' - size: {node.size}'
                       f' - layer name: {node.layer_name}')
 
-            print(f'CURRENT ImageLayer: pos: {data.SessionGlobals.layer_collection.get_active_layer().pos}'
-                  f' - angle: {data.SessionGlobals.layer_collection.get_active_layer().angle}'
-                  f' - size: {data.SessionGlobals.layer_collection.get_active_layer().size}'
-                  f' - layer name: {data.SessionGlobals.layer_collection.get_active_layer().layer_name} \n')
+            print(f'CURRENT ImageLayer: pos: {data.SessionGlobals.project.get_active_layer().pos}'
+                  f' - angle: {data.SessionGlobals.project.get_active_layer().angle}'
+                  f' - size: {data.SessionGlobals.project.get_active_layer().size}'
+                  f' - layer name: {data.SessionGlobals.project.get_active_layer().layer_name} \n')
 
     @staticmethod
     def can_undo():
@@ -113,10 +113,10 @@ class OperationHistory:
         node.layer.size = node.size
         node.layer.layer_name = node.layer_name
         node.layer.render()
-        print(f'CURRENT ImageLayer: pos: {data.SessionGlobals.layer_collection.get_active_layer().pos}'
-              f' - angle: {data.SessionGlobals.layer_collection.get_active_layer().angle}'
-              f' - size: {data.SessionGlobals.layer_collection.get_active_layer().size}'
-              f' - layer name: {data.SessionGlobals.layer_collection.get_active_layer().layer_name}')
+        print(f'CURRENT ImageLayer: pos: {data.SessionGlobals.project.get_active_layer().pos}'
+              f' - angle: {data.SessionGlobals.project.get_active_layer().angle}'
+              f' - size: {data.SessionGlobals.project.get_active_layer().size}'
+              f' - layer name: {data.SessionGlobals.project.get_active_layer().layer_name}')
 
 
 class Translate:

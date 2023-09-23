@@ -11,11 +11,11 @@ class EditorTab(Widget):
         self.mouse_operation_active = False
 
     def clear_screen(self):
-        for img in SessionGlobals.layer_collection.layers:
+        for img in SessionGlobals.project.get_current_page().layers:
             self.remove_widget(img)
 
     def populate_screen(self):
-        for img in SessionGlobals.layer_collection.layers:
+        for img in SessionGlobals.project.get_current_page().layers:
             self.add_widget(img)
 
     def refresh_view(self):
@@ -23,7 +23,7 @@ class EditorTab(Widget):
         self.populate_screen()
 
     def on_touch_down(self, touch):
-        if len(SessionGlobals.layer_collection.layers) == 0:
+        if len(SessionGlobals.project.get_current_page().layers) == 0:
             return
 
         if SessionGlobals.input_listener.hotkey_operation_active:
@@ -32,14 +32,14 @@ class EditorTab(Widget):
         self.mouse_operation_active = True
 
         if SessionGlobals.active_operation == OperationType.TRANSLATE:
-            Translate.on_touch_down(touch.pos, SessionGlobals.layer_collection.get_active_layer())
+            Translate.on_touch_down(touch.pos, SessionGlobals.project.get_active_layer())
         elif SessionGlobals.active_operation is OperationType.ROTATE:
-            Rotate.on_touch_down(touch.pos, SessionGlobals.layer_collection.get_active_layer())
+            Rotate.on_touch_down(touch.pos, SessionGlobals.project.get_active_layer())
         elif SessionGlobals.active_operation is OperationType.SCALE:
-            Scale.on_touch_down(touch.pos, SessionGlobals.layer_collection.get_active_layer())
+            Scale.on_touch_down(touch.pos, SessionGlobals.project.get_active_layer())
 
     def on_touch_move(self, touch):
-        if len(SessionGlobals.layer_collection.layers) == 0:
+        if len(SessionGlobals.project.get_current_page().layers) == 0:
             return
 
         if SessionGlobals.input_listener.hotkey_operation_active:
@@ -49,16 +49,16 @@ class EditorTab(Widget):
             return
 
         if SessionGlobals.active_operation is OperationType.TRANSLATE:
-            Translate.on_touch_move(touch.pos, SessionGlobals.layer_collection.get_active_layer())
+            Translate.on_touch_move(touch.pos, SessionGlobals.project.get_active_layer())
         elif SessionGlobals.active_operation is OperationType.ROTATE:
-            Rotate.on_touch_move(touch.pos, SessionGlobals.layer_collection.get_active_layer())
+            Rotate.on_touch_move(touch.pos, SessionGlobals.project.get_active_layer())
         elif SessionGlobals.active_operation is OperationType.SCALE:
-            Scale.on_touch_move(touch.pos, SessionGlobals.layer_collection.get_active_layer())
+            Scale.on_touch_move(touch.pos, SessionGlobals.project.get_active_layer())
 
-        SessionGlobals.layer_collection.get_active_layer().render()
+        SessionGlobals.project.get_active_layer().render()
 
     def on_touch_up(self, touch):
-        if len(SessionGlobals.layer_collection.layers) == 0:
+        if len(SessionGlobals.project.get_current_page().layers) == 0:
             return
 
         if SessionGlobals.input_listener.hotkey_operation_active:
@@ -68,10 +68,10 @@ class EditorTab(Widget):
             return
 
         if SessionGlobals.active_operation == OperationType.TRANSLATE:
-            Translate.on_touch_up(SessionGlobals.layer_collection.get_active_layer())
+            Translate.on_touch_up(SessionGlobals.project.get_active_layer())
         elif SessionGlobals.active_operation is OperationType.ROTATE:
-            Rotate.on_touch_up(SessionGlobals.layer_collection.get_active_layer())
+            Rotate.on_touch_up(SessionGlobals.project.get_active_layer())
         elif SessionGlobals.active_operation is OperationType.SCALE:
-            Scale.on_touch_up(SessionGlobals.layer_collection.get_active_layer())
+            Scale.on_touch_up(SessionGlobals.project.get_active_layer())
 
         self.mouse_operation_active = False

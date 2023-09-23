@@ -1,4 +1,4 @@
-from objects.LayerCollection import LayerCollection
+from objects.ProjectData import ProjectData
 from ops.Operations import OperationType
 
 # INPUT
@@ -9,12 +9,8 @@ editor = None
 op_button_list = None
 layers_tab = None
 
-# LAYERS
-layer_collection = LayerCollection()
+# PROJECT
+project = ProjectData()
 
 # OPERATIONS
 active_operation: OperationType = OperationType.TRANSLATE
-
-# PAGES
-current_page = 0
-total_pages = 1

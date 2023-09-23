@@ -41,13 +41,13 @@ class InputListener(Widget):
         self.mouse_pos = pos
         if self.hotkey_operation_active:
             if SessionGlobals.active_operation == OperationType.TRANSLATE:
-                Translate.on_touch_move(self.mouse_pos, SessionGlobals.layer_collection.get_active_layer())
+                Translate.on_touch_move(self.mouse_pos, SessionGlobals.project.get_active_layer())
             elif SessionGlobals.active_operation == OperationType.ROTATE:
-                Rotate.on_touch_move(self.mouse_pos, SessionGlobals.layer_collection.get_active_layer())
+                Rotate.on_touch_move(self.mouse_pos, SessionGlobals.project.get_active_layer())
             elif SessionGlobals.active_operation == OperationType.SCALE:
-                Scale.on_touch_move(self.mouse_pos, SessionGlobals.layer_collection.get_active_layer())
+                Scale.on_touch_move(self.mouse_pos, SessionGlobals.project.get_active_layer())
 
-            SessionGlobals.layer_collection.get_active_layer().render()
+            SessionGlobals.project.get_active_layer().render()
 
     def on_touch_down(self, touch):
         if self.hotkey_operation_active:
@@ -56,27 +56,26 @@ class InputListener(Widget):
     def confirm_operation(self):
         print('Confirming op from InputListener')
         if SessionGlobals.active_operation == OperationType.TRANSLATE:
-            Translate.confirm(SessionGlobals.layer_collection.get_active_layer())
+            Translate.confirm(SessionGlobals.project.get_active_layer())
         elif SessionGlobals.active_operation == OperationType.ROTATE:
-            Rotate.confirm(SessionGlobals.layer_collection.get_active_layer())
+            Rotate.confirm(SessionGlobals.project.get_active_layer())
         elif SessionGlobals.active_operation == OperationType.SCALE:
-            Scale.confirm(SessionGlobals.layer_collection.get_active_layer())
+            Scale.confirm(SessionGlobals.project.get_active_layer())
 
         self.hotkey_operation_active = False
 
     def cancel_operation(self):
         if SessionGlobals.active_operation == OperationType.TRANSLATE:
-            Translate.cancel(SessionGlobals.layer_collection.get_active_layer())
+            Translate.cancel(SessionGlobals.project.get_active_layer())
         elif SessionGlobals.active_operation == OperationType.ROTATE:
-            Rotate.cancel(SessionGlobals.layer_collection.get_active_layer())
+            Rotate.cancel(SessionGlobals.project.get_active_layer())
         elif SessionGlobals.active_operation == OperationType.SCALE:
-            Scale.cancel(SessionGlobals.layer_collection.get_active_layer())
+            Scale.cancel(SessionGlobals.project.get_active_layer())
 
-        SessionGlobals.layer_collection.get_active_layer().render()
+        SessionGlobals.project.get_active_layer().render()
         self.hotkey_operation_active = False
 
     def handle_keyboard_input(self, keycode=None, modifiers=None):
-
         if self.hotkey_operation_active:
             if CONFIRM_KEY.is_pressed(keycode, modifiers):
                 self.confirm_operation()
@@ -86,7 +85,7 @@ class InputListener(Widget):
             return
 
         if TRANSLATE_KEY.is_pressed(keycode, modifiers):
-            if len(SessionGlobals.layer_collection.layers) == 0:
+            if len(SessionGlobals.project.get_current_page().layers) == 0:
                 return
 
             if SessionGlobals.editor.mouse_operation_active:
@@ -95,10 +94,11 @@ class InputListener(Widget):
             self.hotkey_operation_active = True
             SessionGlobals.active_operation = OperationType.TRANSLATE
             SessionGlobals.op_button_list.set_button_colors()
-            Translate.on_touch_down(self.mouse_pos, SessionGlobals.layer_collection.get_active_layer())
+
+            Translate.on_touch_down(self.mouse_pos, SessionGlobals.project.get_active_layer())
 
         elif ROTATE_KEY.is_pressed(keycode, modifiers):
-            if len(SessionGlobals.layer_collection.layers) == 0:
+            if len(SessionGlobals.project.get_current_page().layers) == 0:
                 return
 
             if SessionGlobals.editor.mouse_operation_active:
@@ -107,10 +107,11 @@ class InputListener(Widget):
             self.hotkey_operation_active = True
             SessionGlobals.active_operation = OperationType.ROTATE
             SessionGlobals.op_button_list.set_button_colors()
-            Rotate.on_touch_down(self.mouse_pos, SessionGlobals.layer_collection.get_active_layer())
+
+            Rotate.on_touch_down(self.mouse_pos, SessionGlobals.project.get_active_layer())
 
         elif SCALE_KEY.is_pressed(keycode, modifiers):
-            if len(SessionGlobals.layer_collection.layers) == 0:
+            if len(SessionGlobals.project.get_current_page().layers) == 0:
                 return
 
             if SessionGlobals.editor.mouse_operation_active:
@@ -119,7 +120,7 @@ class InputListener(Widget):
             self.hotkey_operation_active = True
             SessionGlobals.active_operation = OperationType.SCALE
             SessionGlobals.op_button_list.set_button_colors()
-            Scale.on_touch_down(self.mouse_pos, SessionGlobals.layer_collection.get_active_layer())
+            Scale.on_touch_down(self.mouse_pos, SessionGlobals.project.get_active_layer())
 
         elif NEW_LAYER_KEY.is_pressed(keycode, modifiers):
             SessionGlobals.layers_tab.on_new_image_layer()
