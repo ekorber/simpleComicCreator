@@ -49,7 +49,7 @@ class PageNavigationWidget(BoxLayout):
         SessionGlobals.editor.clear_screen()
         SessionGlobals.layers_tab.clear_layers_tab()
 
-        SessionGlobals.project.add_new_page(SessionGlobals.project.get_total_pages())
+        SessionGlobals.project.add_new_page(SessionGlobals.project.current_page_index + 1)
 
         SessionGlobals.editor.populate_screen()
         SessionGlobals.layers_tab.populate_layers_tab()
