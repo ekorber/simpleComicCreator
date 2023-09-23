@@ -107,7 +107,8 @@ class PageData:
 
 
 class ProjectData:
-    def __init__(self, dpi: int = 100, size_in_inches: (float, float) = (6.875, 10.438), file_name: str = '', file_path: str = ''):
+    def __init__(self, dpi: int = 100, size_in_inches: (float, float) = (6.875, 10.438), file_name: str = '',
+                 file_path: str = ''):
         self.dpi = dpi
         self.size_in_inches = size_in_inches
         self.size_in_pixels = (ceil(self.size_in_inches[0] * self.dpi), ceil(self.size_in_inches[1] * self.dpi))
