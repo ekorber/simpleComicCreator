@@ -1,6 +1,7 @@
 from kivy.graphics import Color, Rectangle, Rotate, PushMatrix, PopMatrix
 from kivy.uix.image import Image
 from kivy.uix.widget import Widget
+from math import ceil
 
 
 class ImageLayer(Widget):
@@ -27,10 +28,27 @@ class ImageLayer(Widget):
         return self.layer_name == name and self.pos == pos and self.angle == angle and self.size == size
 
 
+class PageBackground(Widget):
+    def __init__(self, pos: (int, int), size: (int, int), color: (float, float, float) = (1, 1, 1), **kwargs):
+        super().__init__(**kwargs)
+        self.pos = pos
+        self.size = size
+        self.color = color
+        self.render()
+
+    def render(self):
+        with self.canvas:
+            self.canvas.clear()
+            PushMatrix()
+            Color(self.color[0], self.color[1], self.color[2], 1, mode='rgba')
+            Rectangle(pos=self.pos, size=self.size)
+            PopMatrix()
+
+
 class PageData:
-    def __init__(self):
+    def __init__(self, page_size: (int, int)):
         self.layers: [ImageLayer] = []
-        self.background_color = (1, 1, 1, 1)
+        self.page_background = PageBackground(pos=(100, 100), size=page_size)
         self.active_layer_index: int = 0
 
     def get_active_layer(self) -> ImageLayer:
@@ -89,11 +107,14 @@ class PageData:
 
 
 class ProjectData:
-    def __init__(self):
-        self.pages: [PageData] = [PageData()]
+    def __init__(self, dpi: int = 100, size_in_inches: (float, float) = (6.875, 10.438), file_name: str = '', file_path: str = ''):
+        self.dpi = dpi
+        self.size_in_inches = size_in_inches
+        self.size_in_pixels = (ceil(self.size_in_inches[0] * self.dpi), ceil(self.size_in_inches[1] * self.dpi))
+        self.file_name = file_name
+        self.file_path = file_path
+        self.pages: [PageData] = [PageData(page_size=self.size_in_pixels)]
         self.current_page_index = 0
-        self.file_name: str = ''
-        self.file_path: str = ''
 
     def get_current_page(self) -> PageData:
         return self.pages[self.current_page_index]

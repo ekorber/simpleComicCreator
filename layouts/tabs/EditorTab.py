@@ -9,12 +9,15 @@ class EditorTab(Widget):
         super().__init__(**kwargs)
         SessionGlobals.editor = self
         self.mouse_operation_active = False
+        self.populate_screen()
 
     def clear_screen(self):
+        self.remove_widget(SessionGlobals.project.get_current_page().page_background)
         for img in SessionGlobals.project.get_current_page().layers:
             self.remove_widget(img)
 
     def populate_screen(self):
+        self.add_widget(SessionGlobals.project.get_current_page().page_background)
         for img in SessionGlobals.project.get_current_page().layers:
             self.add_widget(img)
 
