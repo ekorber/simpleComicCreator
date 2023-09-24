@@ -84,7 +84,13 @@ class InputListener(Widget):
 
             return
 
-        if TRANSLATE_KEY.is_pressed(keycode, modifiers):
+        if SAVE_PROJECT_AS_KEY.is_pressed(keycode, modifiers):
+            SessionGlobals.project.save_as_new_file()
+
+        if SAVE_PROJECT_KEY.is_pressed(keycode, modifiers):
+            SessionGlobals.project.save_data_to_file()
+
+        elif TRANSLATE_KEY.is_pressed(keycode, modifiers):
             if len(SessionGlobals.project.get_current_page().layers) == 0:
                 return
 
@@ -135,5 +141,3 @@ class InputListener(Widget):
             if OperationHistory.can_undo():
                 OperationHistory.undo()
                 SessionGlobals.layers_tab.refresh_view()
-
-
