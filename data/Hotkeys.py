@@ -33,7 +33,7 @@ Z_AXIS_LOCK_KEY = Hotkey(keycode=(122, 'z'))
 
 NEW_PROJECT_KEY = Hotkey(keycode=(110, 'O'), modifiers=['shift', 'ctrl'])
 OPEN_PROJECT_KEY = Hotkey(keycode=(111, 'O'), modifiers=['shift', 'ctrl'])
-SAVE_PROJECT_KEY = Hotkey(keycode=(115, 's'), modifiers=['shift'])
+SAVE_PROJECT_KEY = Hotkey(keycode=(115, 's'), modifiers=['ctrl'])
 SAVE_PROJECT_AS_KEY = Hotkey(keycode=(115, 's'), modifiers=['shift', 'ctrl'])
 
 NEW_LAYER_KEY = Hotkey(keycode=(110, 'n'))
