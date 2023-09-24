@@ -5,6 +5,7 @@ input_listener = None
 editor = None
 op_button_list = None
 layers_tab = None
+page_navigation_widget = None
 
 # PROJECT
 project = None

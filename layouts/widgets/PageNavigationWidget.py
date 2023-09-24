@@ -2,7 +2,6 @@ from kivy.properties import ObjectProperty, StringProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.dropdown import DropDown
-
 from data import SessionGlobals
 
 
@@ -15,6 +14,7 @@ class PageNavigationWidget(BoxLayout):
         super().__init__(**kwargs)
         self.create_dropdown_options()
         self.page_num_text = str(SessionGlobals.project.current_page_index + 1)
+        SessionGlobals.page_navigation_widget = self
 
     def select_page(self, page_num: str):
         SessionGlobals.editor.clear_screen()
@@ -25,6 +25,14 @@ class PageNavigationWidget(BoxLayout):
 
         SessionGlobals.editor.populate_screen()
         SessionGlobals.layers_tab.populate_layers_tab()
+
+    def select_page_no_external_refresh(self, page_num):
+        self.page_num_text = page_num
+        SessionGlobals.project.current_page_index = int(page_num) - 1
+
+    def refresh_view_no_external_refresh(self):
+        self.create_dropdown_options()
+        self.select_page_no_external_refresh(str(SessionGlobals.project.current_page_index + 1))
 
     def open_dropdown(self):
         self.dropdown.open(self.dropdown_button)
