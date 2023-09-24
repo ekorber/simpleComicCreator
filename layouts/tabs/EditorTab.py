@@ -21,6 +21,9 @@ class EditorTab(Widget):
         for img in SessionGlobals.project.get_current_page().layers:
             self.add_widget(img)
 
+        for child in self.children:
+            child.render()
+
     def refresh_view(self):
         self.clear_screen()
         self.populate_screen()
