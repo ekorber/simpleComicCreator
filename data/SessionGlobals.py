@@ -9,6 +9,7 @@ page_navigation_widget = None
 
 # PROJECT
 project = None
+new_project_handler = None
 file_handler = None
 PROJECT_FILE_EXTENSION = 'comix'
 

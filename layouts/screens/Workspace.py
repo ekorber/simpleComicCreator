@@ -9,6 +9,7 @@ import layouts.tabs.ToolOptionsTab
 import layouts.tabs.LayersTab
 import layouts.widgets.OperationButtonsListWidget
 import layouts.widgets.PageNavigationWidget
+from ops.NewProjectHandler import NewProjectHandler
 from ops.Operations import OperationType
 
 
@@ -17,6 +18,7 @@ class Workspace(FloatLayout):
         super().__init__(**kwargs)
         self.add_widget(InputListener())
         self.add_widget(FileHandler())
+        self.add_widget(NewProjectHandler())
         SessionGlobals.active_operation = OperationType.TRANSLATE
         SessionGlobals.project = ProjectData()
 
