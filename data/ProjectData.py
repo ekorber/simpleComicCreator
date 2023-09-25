@@ -2,10 +2,13 @@ from kivy.graphics import Color, Rectangle, Rotate, PushMatrix, PopMatrix
 from kivy.uix.image import Image
 from kivy.uix.widget import Widget
 from math import ceil
+import json
+
+from data import SessionGlobals
 
 
 class ImageLayer(Widget):
-    def __init__(self, image_src: str, pos: (int, int), **kwargs):
+    def __init__(self, image_src: str = '', pos: (int, int) = (100, 100), **kwargs):
         super().__init__(**kwargs)
         self.layer_name = 'New Layer'
         self.pos = pos
@@ -13,7 +16,24 @@ class ImageLayer(Widget):
         self.size = self.image.texture_size
         self.color = (1, 1, 1, 1)
         self.angle = 0
-        self.render()
+
+    def as_dict(self) -> dict:
+        return {
+            'layer_name': self.layer_name,
+            'pos': self.pos,
+            'image_src': self.image.source,
+            'size': self.size,
+            'color': self.color,
+            'angle': self.angle,
+        }
+
+    def load_values(self, data: dict):
+        self.layer_name = data['layer_name']
+        self.pos = data['pos']
+        self.image = Image(source=data['image_src'])
+        self.size = data['size']
+        self.color = data['color']
+        self.angle = data['angle']
 
     def render(self):
         with self.canvas:
@@ -36,6 +56,18 @@ class PageBackground(Widget):
         self.color = color
         self.render()
 
+    def as_dict(self) -> dict:
+        return {
+            'pos': self.pos,
+            'size': self.size,
+            'color': self.color,
+        }
+
+    def load_values(self, data: dict):
+        self.pos = data['pos']
+        self.size = data['size']
+        self.color = data['color']
+
     def render(self):
         with self.canvas:
             self.canvas.clear()
@@ -50,6 +82,28 @@ class PageData:
         self.layers: [ImageLayer] = []
         self.page_background = PageBackground(pos=(100, 100), size=page_size)
         self.active_layer_index: int = 0
+
+    def as_dict(self) -> dict:
+        layer_dictionaries = []
+        for layer in self.layers:
+            layer_dictionaries.append(layer.as_dict())
+
+        return {
+            'layers': layer_dictionaries,
+            'page_background': self.page_background.as_dict(),
+            'active_layer_index': self.active_layer_index,
+        }
+
+    def load_values(self, data: dict):
+        self.layers = []
+        index = 0
+        for layer in data['layers']:
+            self.layers.append(ImageLayer())
+            self.layers[index].load_values(layer)
+            index += 1
+
+        self.page_background.load_values(data['page_background'])
+        self.active_layer_index = data['active_layer_index']
 
     def get_active_layer(self) -> ImageLayer:
         return self.layers[self.active_layer_index]
@@ -107,15 +161,61 @@ class PageData:
 
 
 class ProjectData:
-    def __init__(self, dpi: int = 100, size_in_inches: (float, float) = (6.875, 10.438), file_name: str = '',
-                 file_path: str = ''):
+    def __init__(self, dpi: int = 100, size_in_inches: (float, float) = (6.875, 10.438)):
         self.dpi = dpi
         self.size_in_inches = size_in_inches
         self.size_in_pixels = (ceil(self.size_in_inches[0] * self.dpi), ceil(self.size_in_inches[1] * self.dpi))
-        self.file_name = file_name
-        self.file_path = file_path
+        self.file_path = None
         self.pages: [PageData] = [PageData(page_size=self.size_in_pixels)]
         self.current_page_index = 0
+
+    def as_dict(self) -> dict:
+        page_dictionaries = []
+        for page in self.pages:
+            page_dictionaries.append(page.as_dict())
+
+        return {
+            'dpi': self.dpi,
+            'size_in_inches': self.size_in_inches,
+            'size_in_pixels': self.size_in_pixels,
+            'pages': page_dictionaries,
+            'current_page_index': self.current_page_index,
+        }
+
+    def load_values(self, data: dict):
+        self.dpi = data['dpi']
+        self.size_in_inches = data['size_in_inches']
+        self.size_in_pixels = data['size_in_pixels']
+
+        self.pages = []
+        index = 0
+        for page in data['pages']:
+            self.pages.append(PageData(page_size=self.size_in_pixels))
+            self.pages[index].load_values(page)
+            index += 1
+
+        self.current_page_index = data['current_page_index']
+
+    def to_json(self):
+        return json.dumps(self.as_dict(), indent=4)
+
+    def save_data_to_file(self, save_as: bool = False):
+        if not self.file_path or save_as:
+            path = SessionGlobals.file_handler.pick_save_file_location()
+            if path:
+                self.file_path = path + f'.{SessionGlobals.PROJECT_FILE_EXTENSION}'
+            else:
+                return
+
+        # Save data
+        with open(self.file_path, 'w') as save_file:
+            save_file.write(self.to_json())
+
+    def load_from_file(self, file_path: str):
+        with open(file_path, 'r') as save_file:
+            save_data = json.load(save_file)
+            self.load_values(save_data)
+            self.file_path = file_path
 
     def get_current_page(self) -> PageData:
         return self.pages[self.current_page_index]
@@ -132,20 +232,6 @@ class ProjectData:
 
         if self.current_page_index == self.get_total_pages():
             self.current_page_index -= 1
-
-    def save_data_to_file(self):
-        if not self.file_path:
-            # Save as new project file
-            self.save_as_new_file()
-        else:
-            # Save to existing file
-            print('save to existing file')
-
-    def save_as_new_file(self):
-        print('save as new file')
-
-    def load_from_file(self):
-        pass
 
     def get_active_layer(self) -> ImageLayer:
         return self.get_current_page().get_active_layer()

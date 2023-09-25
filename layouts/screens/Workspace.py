@@ -2,6 +2,7 @@ from kivy.uix.floatlayout import FloatLayout
 
 from data import SessionGlobals
 from data.ProjectData import ProjectData
+from ops.FileHandler import FileHandler
 from ops.InputListener import InputListener
 import layouts.tabs.EditorTab
 import layouts.tabs.ToolOptionsTab
@@ -15,5 +16,7 @@ class Workspace(FloatLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.add_widget(InputListener())
+        self.add_widget(FileHandler())
         SessionGlobals.active_operation = OperationType.TRANSLATE
         SessionGlobals.project = ProjectData()
+
