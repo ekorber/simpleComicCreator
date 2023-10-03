@@ -57,5 +57,5 @@ class FileDropdownMenu(DropDown):
         SessionGlobals.project.save_data_to_file(save_as=True)
 
     def on_export_click(self):
-        print('export')
         self.dismiss()
+        # Still need to implement export

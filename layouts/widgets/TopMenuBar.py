@@ -17,9 +17,7 @@ class TopMenuBar(BoxLayout):
         self.edit_dropdown = EditDropdownMenu()
 
     def open_file_dropdown(self):
-        print('file')
         self.file_dropdown.open(self.file_button)
 
     def open_edit_dropdown(self):
-        print('edit')
         self.edit_dropdown.open(self.edit_button)
