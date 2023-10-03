@@ -1,7 +1,6 @@
 from kivy.core.window import Window
 from kivy.uix.widget import Widget
 
-from data import SessionGlobals
 from data.Hotkeys import *
 from ops.Operations import *
 
@@ -139,11 +138,7 @@ class InputListener(Widget):
 
         # Make sure the hotkeys requiring more modifiers appear higher up in the list
         elif REDO_KEY.is_pressed(keycode, modifiers):
-            if OperationHistory.can_redo():
-                OperationHistory.redo()
-                SessionGlobals.layers_tab.refresh_view()
+            OperationHistory.redo()
 
         elif UNDO_KEY.is_pressed(keycode, modifiers):
-            if OperationHistory.can_undo():
-                OperationHistory.undo()
-                SessionGlobals.layers_tab.refresh_view()
+            OperationHistory.undo()

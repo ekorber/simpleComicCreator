@@ -1,7 +1,7 @@
 from enum import Enum
 from copy import copy
 
-import data.SessionGlobals
+from data import SessionGlobals
 from data.ProjectData import ImageLayer
 
 
@@ -81,10 +81,10 @@ class OperationHistory:
                       f' - size: {node.size}'
                       f' - layer name: {node.layer_name}')
 
-            print(f'CURRENT ImageLayer: pos: {data.SessionGlobals.project.get_active_layer().pos}'
-                  f' - angle: {data.SessionGlobals.project.get_active_layer().angle}'
-                  f' - size: {data.SessionGlobals.project.get_active_layer().size}'
-                  f' - layer name: {data.SessionGlobals.project.get_active_layer().layer_name} \n')
+            print(f'CURRENT ImageLayer: pos: {SessionGlobals.project.get_active_layer().pos}'
+                  f' - angle: {SessionGlobals.project.get_active_layer().angle}'
+                  f' - size: {SessionGlobals.project.get_active_layer().size}'
+                  f' - layer name: {SessionGlobals.project.get_active_layer().layer_name} \n')
 
     @staticmethod
     def can_undo():
@@ -94,6 +94,7 @@ class OperationHistory:
     def undo():
         if OperationHistory.can_undo():
             OperationHistory.execute_historical_node(OperationHistory.current_index - 1)
+            SessionGlobals.layers_tab.refresh_view()
 
     @staticmethod
     def can_redo():
@@ -103,6 +104,7 @@ class OperationHistory:
     def redo():
         if OperationHistory.can_redo():
             OperationHistory.execute_historical_node(OperationHistory.current_index + 1)
+            SessionGlobals.layers_tab.refresh_view()
 
     @staticmethod
     def execute_historical_node(index):
@@ -113,10 +115,10 @@ class OperationHistory:
         node.layer.size = node.size
         node.layer.layer_name = node.layer_name
         node.layer.render()
-        print(f'CURRENT ImageLayer: pos: {data.SessionGlobals.project.get_active_layer().pos}'
-              f' - angle: {data.SessionGlobals.project.get_active_layer().angle}'
-              f' - size: {data.SessionGlobals.project.get_active_layer().size}'
-              f' - layer name: {data.SessionGlobals.project.get_active_layer().layer_name}')
+        print(f'CURRENT ImageLayer: pos: {SessionGlobals.project.get_active_layer().pos}'
+              f' - angle: {SessionGlobals.project.get_active_layer().angle}'
+              f' - size: {SessionGlobals.project.get_active_layer().size}'
+              f' - layer name: {SessionGlobals.project.get_active_layer().layer_name}')
 
 
 class Translate:
