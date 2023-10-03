@@ -3,12 +3,22 @@
 #:include ./layouts/tabs/layerstab.kv
 #:include ./layouts/widgets/operationbuttonslistwidget.kv
 #:include ./layouts/widgets/pagenavigationwidget.kv
+#:include ./layouts/widgets/topmenubar.kv
 
 <Workspace>:
 
     EditorTab:
 
-    OperationButtonsListWidget:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 100
+
+        TopMenuBar:
+            size_hint_y: None
+            size: (1, 50)
+
+        OperationButtonsListWidget:
+            padding: 20
 
     BoxLayout:
         orientation: 'vertical'

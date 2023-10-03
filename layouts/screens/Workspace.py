@@ -9,6 +9,7 @@ import layouts.tabs.ToolOptionsTab
 import layouts.tabs.LayersTab
 import layouts.widgets.OperationButtonsListWidget
 import layouts.widgets.PageNavigationWidget
+import layouts.widgets.TopMenuBar
 from ops.NewProjectHandler import NewProjectHandler
 from ops.Operations import OperationType
 

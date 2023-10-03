@@ -1,7 +1,17 @@
 <TopMenuBar>:
+    file_button: file_button
+    edit_button: edit_button
 
     Button:
+        id: file_button
+        size_hint_x: None
+        size: (70, 1)
         text: 'File'
+        on_press: root.open_file_dropdown()
 
     Button:
+        id: edit_button
+        size_hint_x: None
+        size: (70, 1)
         text: 'Edit'
+        on_press: root.open_edit_dropdown()
