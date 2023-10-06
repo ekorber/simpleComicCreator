@@ -95,6 +95,9 @@ class InputListener(Widget):
         elif SAVE_PROJECT_KEY.is_pressed(keycode, modifiers):
             SessionGlobals.project.save_data_to_file()
 
+        elif EXPORT_PROJECT_KEY.is_pressed(keycode, modifiers):
+            SessionGlobals.file_handler.export_project()
+
         elif TRANSLATE_KEY.is_pressed(keycode, modifiers):
             if len(SessionGlobals.project.get_current_page().layers) == 0:
                 return

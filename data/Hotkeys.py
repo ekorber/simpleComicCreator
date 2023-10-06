@@ -35,6 +35,7 @@ NEW_PROJECT_KEY = Hotkey(keycode=(110, 'n'), modifiers=['shift', 'ctrl'])
 OPEN_PROJECT_KEY = Hotkey(keycode=(111, 'o'), modifiers=['shift', 'ctrl'])
 SAVE_PROJECT_KEY = Hotkey(keycode=(115, 's'), modifiers=['ctrl'])
 SAVE_PROJECT_AS_KEY = Hotkey(keycode=(115, 's'), modifiers=['shift', 'ctrl'])
+EXPORT_PROJECT_KEY = Hotkey(keycode=(101, 'e'), modifiers=['ctrl'])
 
 NEW_LAYER_KEY = Hotkey(keycode=(110, 'n'))
 NEW_PAGE_KEY = Hotkey(keycode=(110, 'n'), modifiers=['shift'])

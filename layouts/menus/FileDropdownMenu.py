@@ -34,7 +34,7 @@ class FileDropdownMenu(DropDown):
         save_as.bind(on_release=lambda instance: self.on_save_project_as_click())
         self.add_widget(save_as)
 
-        export = Button(text='Export Project')
+        export = Button(text='Export Project (Ctrl + E)')
         export.size_hint = (None, None)
         export.size = (250, 50)
         export.bind(on_release=lambda instance: self.on_export_click())
@@ -58,4 +58,4 @@ class FileDropdownMenu(DropDown):
 
     def on_export_click(self):
         self.dismiss()
-        # Still need to implement export
+        SessionGlobals.file_handler.export_project()
